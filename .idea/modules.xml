@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-backend.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-entity/pd-sms-entity.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-entity/pd-sms-entity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/ps-sms-api/ps-sms-api.iml" filepath="$PROJECT_DIR$/pd-sms-backend/ps-sms-api/ps-sms-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sms-project.iml" filepath="$PROJECT_DIR$/.idea/sms-project.iml" />
+    </modules>
+  </component>
+</project>
