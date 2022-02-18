@@ -13,7 +13,8 @@ pinda:
     password: heyang94216..
   database:
       isBlockAttack: false  # 是否启用 攻击 SQL 阻断解析器
-
+server:
+  port: 8080
 spring:
   datasource:
     druid:

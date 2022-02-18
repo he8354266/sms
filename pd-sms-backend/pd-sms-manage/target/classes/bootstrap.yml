@@ -1,0 +1,90 @@
+pinda:
+  local-ip: ${LOCAL_IP:${spring.cloud.client.ip-address}}   # docker部署时，需要指定， 表示的运行该服务的宿主机IP
+  nacos:
+    ip: 127.0.0.1
+    port: 12809
+    namespace: 59312764-cd04-4b0d-87d6-07494403e698
+  mysql:
+    ip: 192.168.56.10
+    port: 3306
+    driverClassName: com.mysql.cj.jdbc.Driver
+    database: pd-sms
+    username: root
+    password: heyang94216..
+  database:
+      isBlockAttack: false  # 是否启用 攻击 SQL 阻断解析器
+server:
+  port: 8082
+spring:
+  datasource:
+    druid:
+      username: ${pinda.mysql.username}
+      password: ${pinda.mysql.password}
+      driver-class-name: ${pinda.mysql.driverClassName}
+      url: jdbc:mysql://${pinda.mysql.ip}:${pinda.mysql.port}/${pinda.mysql.database}?serverTimezone=CTT&characterEncoding=utf8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true
+      db-type: mysql
+      initialSize: 10
+      minIdle: 10
+      maxActive: 500
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      validation-query: SELECT 'x'
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000  #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000    #配置一个连接在池中最小生存的时间，单位是毫秒
+      filters: stat,wall
+      filter:
+        wall:
+          enabled: true
+          config:
+            commentAllow: true
+            multiStatementAllow: true
+            noneBaseStatementAllow: true
+      web-stat-filter:  # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js , *.gif ,*.jpg ,*.png ,*.css ,*.ico , /druid/*"
+        session-stat-max-count: 1000
+        profile-enable: true
+        session-stat-enable: false
+      stat-view-servlet:  #展示Druid的统计信息,StatViewServlet的用途包括：1.提供监控信息展示的html页面2.提供监控信息的JSON API
+        enabled: true
+        url-pattern: /druid/*   #根据配置中的url-pattern来访问内置监控页面，如果是上面的配置，内置监控页面的首页是/druid/index.html例如：http://127.0.0.1:9000/druid/index.html
+        reset-enable: true    #允许清空统计数据
+        login-username: pinda
+        login-password: pinda
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: pd-sms-manage
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:12809
+        file-extension: yml
+        namespace: 59312764-cd04-4b0d-87d6-07494403e698
+        shared-dataids: common.yml,redis.yml,mysql.yml
+        refreshable-dataids: common.yml
+        enabled: true
+      discovery:
+        server-addr: 127.0.0.1:12809
+        namespace: 59312764-cd04-4b0d-87d6-07494403e698
+        metadata:
+          management.context-path: ${server.servlet.context-path:}${spring.mvc.servlet.path:}${management.endpoints.web.base-path:}
+
+logging:
+  file:
+    path: /data/projects/logs
+    name: ${logging.file.path}/${spring.application.name}/root.log
+
+info:
+  name: "pd-sms-manage"
+  description: "短信管理启动模块"
+  version: "1.0.0"
+  spring-boot-version: "2.2.2.RELEASE"
+  spring-cloud-version: "Hoxton.SR1"

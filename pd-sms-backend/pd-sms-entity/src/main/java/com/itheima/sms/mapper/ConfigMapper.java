@@ -2,6 +2,7 @@ package com.itheima.sms.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itheima.sms.entity.ConfigEntity;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

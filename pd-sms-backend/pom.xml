@@ -6,6 +6,8 @@
     <modules>
         <module>ps-sms-api</module>
         <module>pd-sms-entity</module>
+        <module>pd-sms-manage</module>
+        <module>pd-sms-sdk</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
