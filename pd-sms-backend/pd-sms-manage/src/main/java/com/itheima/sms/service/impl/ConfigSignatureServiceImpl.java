@@ -52,7 +52,16 @@ public class ConfigSignatureServiceImpl extends ServiceImpl<ConfigSignatureMappe
                 this.remove(wrapper);
                 log.info("删除成功 config:{} deleteIds:{}", entity.getId(), deleteIds);
             }
-            if(CollectionUtils.)
+            if (!CollectionUtils.isEmpty(addIds)) {
+                List<ConfigSignatureEntity> configSignatureEntities = addIds.stream().map(item -> {
+                    ConfigSignatureEntity configSignatureEntity = new ConfigSignatureEntity();
+                    configSignatureEntity.setConfigId(entity.getId());
+                    configSignatureEntity.setSignatureId(item);
+                    return configSignatureEntity;
+                }).collect(Collectors.toList());
+                this.saveBatch(configSignatureEntities);
+                log.info("新增成功 config:{} addIds:{}", entity.getId(), addIds);
+            }
         }
     }
 }
