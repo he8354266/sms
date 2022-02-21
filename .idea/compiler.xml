@@ -8,9 +8,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="pd-sms-entity" />
-        <module name="pd-sms-manage" />
-        <module name="ps-sms-api" />
         <module name="pd-sms-sdk" />
+        <module name="ps-sms-api" />
+        <module name="pd-sms-manage" />
+        <module name="pd-sms-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,6 +19,7 @@
       <module name="pd-sms-entity" target="1.8" />
       <module name="pd-sms-manage" target="1.8" />
       <module name="pd-sms-sdk" target="1.8" />
+      <module name="pd-sms-server" target="1.8" />
       <module name="ps-sms-api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -26,6 +28,7 @@
       <module name="pd-sms-entity" options="-parameters" />
       <module name="pd-sms-manage" options="-parameters" />
       <module name="pd-sms-sdk" options="-parameters" />
+      <module name="pd-sms-server" options="-parameters" />
       <module name="ps-sms-api" options="-parameters" />
     </option>
   </component>

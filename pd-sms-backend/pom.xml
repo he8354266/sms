@@ -8,6 +8,7 @@
         <module>pd-sms-entity</module>
         <module>pd-sms-manage</module>
         <module>pd-sms-sdk</module>
+        <module>pd-sms-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

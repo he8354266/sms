@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-entity/pd-sms-entity.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-entity/pd-sms-entity.iml" />
       <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-manage/pd-sms-manage.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-manage/pd-sms-manage.iml" />
       <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-sdk/pd-sms-sdk.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-sdk/pd-sms-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-server/pd-sms-server.iml" filepath="$PROJECT_DIR$/pd-sms-backend/pd-sms-server/pd-sms-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/pd-sms-backend/ps-sms-api/ps-sms-api.iml" filepath="$PROJECT_DIR$/pd-sms-backend/ps-sms-api/ps-sms-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/sms-project.iml" filepath="$PROJECT_DIR$/.idea/sms-project.iml" />
     </modules>

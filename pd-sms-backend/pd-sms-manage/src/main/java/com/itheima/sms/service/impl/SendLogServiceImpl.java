@@ -68,6 +68,102 @@ package com.itheima.sms.service.impl;/**
  * @createDate 2022/2/21 10:58
  * @updateDate 2022/2/21 10:58
  * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 10:58
+ * @updateDate 2022/2/21 10:58
+ * @version 1.0
  **/
 
 /**
@@ -94,6 +190,7 @@ import org.springframework.stereotype.Service;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -138,21 +235,50 @@ public class SendLogServiceImpl extends ServiceImpl<SendLogMapper, SendLogEntity
 
     @Override
     public List<Map> countForConfig(Map params) {
-        return null;
+        return this.baseMapper.countForConfig(params);
     }
 
     @Override
     public List<Map> rateForConfig(Map params) {
-        return null;
+        List<Map> list = this.baseMapper.countForConfig(params);
+        for (Map map : list) {
+            int count = Integer.parseInt(map.get("count").toString());
+            int success = Integer.parseInt(map.get("value").toString());
+            DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+            //可以设置精确几位小数
+            df.setMaximumFractionDigits(2);
+            //模式 四舍五入
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            double accuracy_num = (double) success / (double) count * 100;
+            map.put("value", df.format(accuracy_num));
+        }
+        return list;
     }
 
     @Override
     public MarketingStatisticsCountVO getMarketingCountByBusinessId(String id) {
-        return null;
+        Map params = new HashMap();
+        params.put("business", id);
+        MarketingStatisticsCountVO marketingStatisticsCountVO = this.baseMapper.getMarketingCount(params);
+        marketingStatisticsCountVO.setFail(marketingStatisticsCountVO.getCount() - marketingStatisticsCountVO.getSuccess());
+        if (marketingStatisticsCountVO.getCount() > 0) {
+            DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+            //可以设置精确几位小数
+            df.setMaximumFractionDigits(2);
+            //模式 例如四舍五入
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            double accuracy_num = (double) marketingStatisticsCountVO.getSuccess() / (double) marketingStatisticsCountVO.getCount() * 100;
+            marketingStatisticsCountVO.setSuccessRate(df.format(accuracy_num));
+        } else {
+            marketingStatisticsCountVO.setSuccessRate("100");
+        }
+        return marketingStatisticsCountVO;
     }
 
     @Override
     public Page<SendLogPageVO> sendLogPage(Page<SendLogPageVO> page, SendLogPageVO sendLogPageVO) {
-        return null;
+        IPage<SendLogPageVO> sendLogVOPage = this.baseMapper.sendLogPage(page, sendLogPageVO);
+        page.setRecords(sendLogVOPage.getRecords());
+        return page;
     }
 }

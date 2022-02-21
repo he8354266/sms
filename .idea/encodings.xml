@@ -6,7 +6,8 @@
     <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-manage/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-manage/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-sdk/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-sdk/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pd-sms-backend/pd-sms-server/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pd-sms-backend/ps-sms-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pd-sms-backend/ps-sms-api/src/main/resources" charset="UTF-8" />
   </component>
