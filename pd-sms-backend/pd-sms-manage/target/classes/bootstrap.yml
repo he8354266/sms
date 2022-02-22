@@ -1,9 +1,9 @@
 pinda:
   local-ip: ${LOCAL_IP:${spring.cloud.client.ip-address}}   # docker部署时，需要指定， 表示的运行该服务的宿主机IP
   nacos:
-    ip: ${NACOS_IP:@pom.nacos.ip@}
-    port: ${NACOS_PORT:@pom.nacos.port@}
-    namespace: ${NACOS_ID:@pom.nacos.namespace@}
+    ip: 127.0.0.1
+    port: 12809
+    namespace: 59312764-cd04-4b0d-87d6-07494403e698
   mysql:
     ip: 192.168.56.10
     port: 3306
@@ -14,7 +14,7 @@ pinda:
   database:
       isBlockAttack: false  # 是否启用 攻击 SQL 阻断解析器
 server:
-  port: 8081
+  port: 8082
 spring:
   datasource:
     druid:
@@ -59,9 +59,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: @project.artifactId@
+    name: pd-sms-manage
   profiles:
-    active: @pom.profile.name@
+    active: dev
   cloud:
     nacos:
       config:
@@ -83,31 +83,8 @@ logging:
     name: ${logging.file.path}/${spring.application.name}/root.log
 
 info:
-  name: "@project.name@"
-  description: "@project.description@"
-  version: "@project.version@"
-  spring-boot-version: "@spring.boot.version@"
-  spring-cloud-version: "@spring.cloud.version@"
-
-
-
-
-# mysql 通用配置
-
-mybatis-plus:
-  mapper-locations:
-    - classpath*:mapper/*.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.itheima.pinda.*.entity;com.itheima.sms.*.entity;com.itheima.pinda.database.mybatis.typehandler
-  global-config:
-    db-config:
-      id-type: INPUT
-      insert-strategy: NOT_NULL
-      update-strategy: NOT_NULL
-      select-strategy: NOT_EMPTY
-  configuration:
-    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
-    map-underscore-to-camel-case: true
-    cache-enabled: false
-    #配置JdbcTypeForNull, oracle数据库必须配置
-    jdbc-type-for-null: 'null'
+  name: "pd-sms-manage"
+  description: "短信管理启动模块"
+  version: "1.0.0"
+  spring-boot-version: "2.2.2.RELEASE"
+  spring-cloud-version: "Hoxton.SR1"

@@ -1,9 +1,9 @@
 pinda:
   local-ip: ${LOCAL_IP:${spring.cloud.client.ip-address}}   # docker部署时，需要指定， 表示的运行该服务的宿主机IP
   nacos:
-    ip: ${NACOS_IP:@pom.nacos.ip@}
-    port: ${NACOS_PORT:@pom.nacos.port@}
-    namespace: ${NACOS_ID:@pom.nacos.namespace@}
+    ip: ${NACOS_IP:192.168.1.100}
+    port: ${NACOS_PORT:12809}
+    namespace: ${NACOS_ID:59312764-cd04-4b0d-87d6-07494403e698}
   mysql:
     ip: 192.168.56.10
     port: 3306
@@ -59,9 +59,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: @project.artifactId@
+    name: pd-sms-api
   profiles:
-    active: @pom.profile.name@
+    active: dev
   cloud:
     nacos:
       config:
@@ -83,11 +83,11 @@ logging:
     name: ${logging.file.path}/${spring.application.name}/root.log
 
 info:
-  name: "@project.name@"
-  description: "@project.description@"
-  version: "@project.version@"
-  spring-boot-version: "@spring.boot.version@"
-  spring-cloud-version: "@spring.cloud.version@"
+  name: "pd-sms-api"
+  description: "短信API启动模块"
+  version: "1.0.0"
+  spring-boot-version: "2.2.2.RELEASE"
+  spring-cloud-version: "Hoxton.SR1"
 
 
 
