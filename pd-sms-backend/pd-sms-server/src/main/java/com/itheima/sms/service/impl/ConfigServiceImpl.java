@@ -176,6 +176,78 @@ package com.itheima.sms.service.impl;/**
  * @createDate 2022/2/21 16:40
  * @updateDate 2022/2/21 16:40
  * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/2/21 16:40
+ * @updateDate 2022/2/21 16:40
+ * @version 1.0
  **/
 
 /**
@@ -321,12 +393,39 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, ConfigEntity> i
                 }
             });
             //次数相同，按级别排序
+            configDTOS.sort(Comparator.comparing(ConfigDTO::getLastSuccessNum, Collections.reverseOrder()).thenComparing(ConfigDTO::getLevel));
+            log.info("第二轮排序后:{}", configDTOS);
         }
-        return null;
+        int level = 1;
+        list.clear();
+        for (ConfigDTO configDTO : configDTOS) {
+            ConfigEntity configEntity = new ConfigEntity();
+            BeanUtils.copyProperties(configDTO, configEntity);
+            configEntity.setLevel(level++);
+            list.add(configEntity);
+        }
+        //查询不可用通道
+        LambdaQueryWrapper<ConfigEntity> unActivequeryWrapper = new LambdaQueryWrapper<>();
+        unActivequeryWrapper.ne(ConfigEntity::getId, firstConfigEntity.getId());
+        unActivequeryWrapper.eq(ConfigEntity::getIsActive, 0);
+        unActivequeryWrapper.orderByAsc(ConfigEntity::getLevel);
+        List<ConfigEntity> unActiveList = baseMapper.selectList(unActivequeryWrapper);
+        for (ConfigEntity configEntity : unActiveList) {
+            configEntity.setLevel(level++);
+            list.add(configEntity);
+        }
+        // 原第一通道置位不可用 并将排序推后
+        firstConfigEntity.setLevel(99);
+        firstConfigEntity.setIsEnable(0);
+        list.add(firstConfigEntity);
+        log.info("listForNewConnect value: {}", list);
+        return list;
     }
 
     @Override
     public boolean updateBatchById(Collection<ConfigEntity> entityList) {
-        return false;
+        boolean result = super.updateBatchById(entityList);
+        redisTemplate.delete("listForConnect");
+        return result;
     }
 }
