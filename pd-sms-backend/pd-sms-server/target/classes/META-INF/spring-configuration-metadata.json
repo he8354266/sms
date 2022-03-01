@@ -1,0 +1,29 @@
+{
+  "groups": [
+    {
+      "name": "pinda.sms",
+      "type": "com.itheima.sms.properties.SmsProperties",
+      "sourceType": "com.itheima.sms.properties.SmsProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "pinda.sms.config-build-scale",
+      "type": "java.lang.Double",
+      "sourceType": "com.itheima.sms.properties.SmsProperties"
+    },
+    {
+      "name": "pinda.sms.config-level-fail-num",
+      "type": "java.lang.Integer",
+      "sourceType": "com.itheima.sms.properties.SmsProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "pinda.sms.message-error-num",
+      "type": "java.lang.Integer",
+      "sourceType": "com.itheima.sms.properties.SmsProperties",
+      "defaultValue": 0
+    }
+  ],
+  "hints": []
+}
