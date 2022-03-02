@@ -1,38 +1,82 @@
 package com.itheima.sms.redismq;/**
  * @Title: project
  * @Package * @Description:     * @author CodingSir
- * @date 2022/2/2310:18
+ * @date 2022/3/214:42
  * @description zkjy
  * @author zkjy
  * @updateUser
- * @createDate 2022/2/23 10:18
- * @updateDate 2022/2/23 10:18
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
  * @version 1.0
  * @description zkjy
  * @author zkjy
  * @updateUser
- * @createDate 2022/2/23 10:18
- * @updateDate 2022/2/23 10:18
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
  * @version 1.0
  * @description zkjy
  * @author zkjy
  * @updateUser
- * @createDate 2022/2/23 10:18
- * @updateDate 2022/2/23 10:18
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
  * @version 1.0
  * @description zkjy
  * @author zkjy
  * @updateUser
- * @createDate 2022/2/23 10:18
- * @updateDate 2022/2/23 10:18
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
+ * @version 1.0
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42
  * @version 1.0
  **/
 
+/**
+ * @description zkjy
+ * @author zkjy
+ * @updateUser
+ * @createDate 2022/3/2 14:42
+ * @updateDate 2022/3/2 14:42     
+ * @version 1.0
+ **/
 
 import com.itheima.sms.factory.SmsFactory;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -41,18 +85,19 @@ import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis队列消费者，监听消息队列TOPIC_GENERAL_SMS，普通优先级的短信，如营销短信
+ * Redis队列-----消费者
+ * 监听消息队列：TOPIC_HIGH_SMS，高优先级的短信，如验证码之类的短信
  */
 @Component
 @Slf4j
-public class GeneralSmsListener extends Thread {
+public class HighSmsListener extends Thread {
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
     private SmsFactory smsFactory;
 
-    private String queueKey = "TOPIC_GENERAL_SMS";
+    private String queueKey = "TOPIC_HIGH_SMS";
 
     @Value("${spring.redis.queue.pop.timeout}")
     private Long popTimeout = 8000L;
@@ -62,12 +107,12 @@ public class GeneralSmsListener extends Thread {
     @PostConstruct
     private void init() {
         listOps = redisTemplate.opsForList();
-        this.start();
+
     }
 
     @Override
     public void run() {
-        //TODO 监听TOPIC_GENERAL_SMS队列，如果有消息则调用短信发送工厂发送实时短信
+        //TODO 监听TOPIC_HIGH_SMS队列，如果有消息则调用短信发送工厂发送实时短信
         log.info("监听队列：{}中的短信消息", queueKey);
 
         //持续监听
@@ -81,4 +126,5 @@ public class GeneralSmsListener extends Thread {
             }
         }
     }
+
 }
