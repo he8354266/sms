@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author
  */
-public abstract class AbstractSmsService {
+public abstract class AbstractSmsService  {
     /**
      * 通道配置信息
      */

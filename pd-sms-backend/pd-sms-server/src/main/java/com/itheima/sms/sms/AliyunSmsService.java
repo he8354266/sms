@@ -4,15 +4,25 @@ package com.itheima.sms.sms;/**
  * @date 2022/3/215:11
  */
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
+import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.itheima.sms.entity.SignatureEntity;
 import com.itheima.sms.entity.SmsConfig;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import com.itheima.pinda.utils.DateUtils;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -54,11 +64,77 @@ public class AliyunSmsService extends AbstractSmsService {
 
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
-        return null;
+        request.setSysMethod(MethodType.POST);
+        request.setSysDomain(config.getDomain());
+        request.setSysVersion("2017-05-25");
+        request.setSysAction("SendSms");
+        request.putQueryParameter("RegionId", config.get("RegionId"));
+        request.putBodyParameter("PhoneNumbers", mobile);
+        request.putBodyParameter("SignName", signatureEntity.getContent());
+        request.putBodyParameter("TemplateCode", code);
+        request.putBodyParameter("TemplateParam", JSON.toJSONString(params));
+
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+            JSONObject jsonObject = JSON.parseObject(response.getData());
+            if (jsonObject.containsKey("Code") && jsonObject.getString("Code").equals("OK")) {
+                return response.getData();
+            } else {
+                return failResponse(jsonObject.getString("Message"), response.getData());
+            }
+        } catch (Exception e) {
+            log.error("Aliyun 短信发送失败：{} ,{}", mobile, template, e);
+            return failResponse(e.getMessage(), e.getMessage());
+        }
     }
 
+    @SneakyThrows
     @Override
     protected String sendSmsBatch(String[] mobiles, LinkedHashMap<String, String>[] params, String[] signatures, String[] templates) {
+        DefaultAcsClient client = new DefaultAcsClient(profile);
+
+        CommonRequest request = new CommonRequest();
+        request.setSysMethod(MethodType.POST);
+        request.setSysDomain(config.getDomain());
+        request.setSysVersion(DateUtils.formatAsDate(LocalDateTime.now()));
+        request.setSysAction("SendBatchSms");
+        request.putQueryParameter("RegionId", config.get("RegionId"));
+
+        if (mobiles.length <= 100) {
+            request.putBodyParameter("PhoneNumbers", mobiles);
+            request.putBodyParameter("SignName", signatures);
+            request.putBodyParameter("TemplateCode", templates);
+            request.putBodyParameter("TemplateParam", JSON.toJSONString(params));
+            try {
+                CommonResponse response = client.getCommonResponse(request);
+                log.info(response.getData());
+                return response.getData();
+            } catch (ServerException e) {
+                log.error("短信发送失败：{} ,{}", mobiles, templates, e);
+            } catch (ClientException e) {
+                log.error("短信发送失败：{} ,{}", mobiles, templates, e);
+            }
+        } else {
+            int batchCount = (mobiles.length / 100) + 1;
+            for (int i = 0; i < batchCount; i++) {
+                String[] newMobiles = Arrays.copyOfRange(mobiles, i * 100, (i + 1) * 100);
+                String[] newSignNames = Arrays.copyOfRange(signatures, i * 100, (i + 1) * 100);
+                String[] newTemplates = Arrays.copyOfRange(templates, i * 100, (i + 1) * 100);
+                LinkedHashMap[] newParams = Arrays.copyOfRange(params, i * 100, (i + 1) * 100);
+                request.putBodyParameter("PhoneNumbers", newMobiles);
+                request.putBodyParameter("SignName", newSignNames);
+                request.putBodyParameter("TemplateCode", newTemplates);
+                request.putBodyParameter("TemplateParam", JSON.toJSONString(newParams));
+                try {
+                    CommonResponse response = client.getCommonResponse(request);
+                    log.info(response.getData());
+                } catch (ServerException e) {
+                    log.error("短信发送失败：{} ,{}", mobiles, templates, e);
+                } catch (ClientException e) {
+                    log.error("短信发送失败：{} ,{}", mobiles, templates, e);
+                }
+            }
+        }
         return null;
     }
 }
